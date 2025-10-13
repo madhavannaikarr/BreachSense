@@ -22,7 +22,12 @@ Check Leaks:
 The second script queries LeakCheck’s API for each email and logs the findings in a JSON file.
 
 Visualize Results:
-Open dashboard.html in your browser to explore charts, detailed breach sources, and safety insights.
+Open dashboard.html in your browser to explore charts, detailed breach sources.
+<img width="1600" height="743" alt="image" src="https://github.com/user-attachments/assets/09f31d34-56e3-4fc6-858d-655bce5402a0" />
+<img width="1600" height="755" alt="image" src="https://github.com/user-attachments/assets/dfa48848-eff9-40f9-8d4d-11fbc7bca217" />
+<img width="1600" height="652" alt="image" src="https://github.com/user-attachments/assets/a70490eb-b1ee-4711-bc7c-f43bdf19081f" />
+
+
 
 🛡️ Notes
 
