@@ -8,10 +8,43 @@
         "email": "anand_godbole@spit.ac.in",
         "found": 4,
         "sources": [
-            "Twitter.com (scraping data)",
-            "LuminPDF.com",
-            "Chegg.com",
-            "TrueCaller India"
+            {
+                "name": "Twitter.com (scraping data)",
+                "date": "2022-01",
+                "method": "Unknown Method",
+                "sector": "Uncategorized",
+                "pii": [
+                    "Unknown"
+                ]
+            },
+            {
+                "name": "LuminPDF.com",
+                "date": "2019-04",
+                "method": "Unknown Method",
+                "sector": "Uncategorized",
+                "pii": [
+                    "Unknown"
+                ]
+            },
+            {
+                "name": "Chegg.com",
+                "date": "2018-03",
+                "method": "Unknown Method",
+                "sector": "Education",
+                "pii": [
+                    "Email",
+                    "Password"
+                ]
+            },
+            {
+                "name": "TrueCaller India",
+                "date": "2019-02",
+                "method": "Unknown Method",
+                "sector": "Uncategorized",
+                "pii": [
+                    "Unknown"
+                ]
+            }
         ]
     },
     {
@@ -23,7 +56,17 @@
         "email": "anantvnimkar@spit.ac.in",
         "found": 1,
         "sources": [
-            "Bigbasket.com"
+            {
+                "name": "Bigbasket.com",
+                "date": "2021-03",
+                "method": "Unknown Method",
+                "sector": "E-Commerce",
+                "pii": [
+                    "Email",
+                    "Phone",
+                    "Address"
+                ]
+            }
         ]
     },
     {
@@ -40,21 +83,45 @@
         "email": "deepak_karia@spit.ac.in",
         "found": 1,
         "sources": [
-            "GoNitro.com"
+            {
+                "name": "GoNitro.com",
+                "date": "2020-08",
+                "method": "Unknown Method",
+                "sector": "Uncategorized",
+                "pii": [
+                    "Unknown"
+                ]
+            }
         ]
     },
     {
         "email": "drkalbande@spit.ac.in",
         "found": 4,
         "sources": [
-            "Stealer Logs"
+            {
+                "name": "Stealer Logs",
+                "date": "Unknown",
+                "method": "Unknown Method",
+                "sector": "Uncategorized",
+                "pii": [
+                    "Unknown"
+                ]
+            }
         ]
     },
     {
         "email": "g_haldankar@spit.ac.in",
         "found": 1,
         "sources": [
-            "Indiamart.com"
+            {
+                "name": "Indiamart.com",
+                "date": "2021-05",
+                "method": "Unknown Method",
+                "sector": "Uncategorized",
+                "pii": [
+                    "Unknown"
+                ]
+            }
         ]
     },
     {
@@ -76,8 +143,25 @@
         "email": "kiran_gawande@spit.ac.in",
         "found": 2,
         "sources": [
-            "Twitter.com (scraping data)",
-            "Chegg.com"
+            {
+                "name": "Twitter.com (scraping data)",
+                "date": "2022-01",
+                "method": "Unknown Method",
+                "sector": "Uncategorized",
+                "pii": [
+                    "Unknown"
+                ]
+            },
+            {
+                "name": "Chegg.com",
+                "date": "2018-03",
+                "method": "Unknown Method",
+                "sector": "Education",
+                "pii": [
+                    "Email",
+                    "Password"
+                ]
+            }
         ]
     },
     {
@@ -89,14 +173,32 @@
         "email": "ktvtalele@spit.ac.in",
         "found": 5,
         "sources": [
-            "Stealer Logs"
+            {
+                "name": "Stealer Logs",
+                "date": "Unknown",
+                "method": "Unknown Method",
+                "sector": "Uncategorized",
+                "pii": [
+                    "Unknown"
+                ]
+            }
         ]
     },
     {
         "email": "manisha_bansode@spit.ac.in",
         "found": 1,
         "sources": [
-            "Bigbasket.com"
+            {
+                "name": "Bigbasket.com",
+                "date": "2021-03",
+                "method": "Unknown Method",
+                "sector": "E-Commerce",
+                "pii": [
+                    "Email",
+                    "Phone",
+                    "Address"
+                ]
+            }
         ]
     },
     {
@@ -108,7 +210,15 @@
         "email": "najib_ghatte@spit.ac.in",
         "found": 16,
         "sources": [
-            "Stealer Logs"
+            {
+                "name": "Stealer Logs",
+                "date": "Unknown",
+                "method": "Unknown Method",
+                "sector": "Uncategorized",
+                "pii": [
+                    "Unknown"
+                ]
+            }
         ]
     },
     {
@@ -135,7 +245,15 @@
         "email": "payal_shah@spit.ac.in",
         "found": 1,
         "sources": [
-            "GoNitro.com"
+            {
+                "name": "GoNitro.com",
+                "date": "2020-08",
+                "method": "Unknown Method",
+                "sector": "Uncategorized",
+                "pii": [
+                    "Unknown"
+                ]
+            }
         ]
     },
     {
@@ -147,8 +265,24 @@
         "email": "pramod_bide@spit.ac.in",
         "found": 4,
         "sources": [
-            "Stealer Logs",
-            "TrueCaller India"
+            {
+                "name": "TrueCaller India",
+                "date": "2019-02",
+                "method": "Unknown Method",
+                "sector": "Uncategorized",
+                "pii": [
+                    "Unknown"
+                ]
+            },
+            {
+                "name": "Stealer Logs",
+                "date": "Unknown",
+                "method": "Unknown Method",
+                "sector": "Uncategorized",
+                "pii": [
+                    "Unknown"
+                ]
+            }
         ]
     },
     {
@@ -160,7 +294,15 @@
         "email": "preeti.vinayakray@spit.ac.in",
         "found": 1,
         "sources": [
-            "Stealer Logs"
+            {
+                "name": "Stealer Logs",
+                "date": "Unknown",
+                "method": "Unknown Method",
+                "sector": "Uncategorized",
+                "pii": [
+                    "Unknown"
+                ]
+            }
         ]
     },
     {
@@ -177,8 +319,25 @@
         "email": "reeta_koshy@spit.ac.in",
         "found": 2,
         "sources": [
-            "Chegg.com",
-            "GoNitro.com"
+            {
+                "name": "Chegg.com",
+                "date": "2018-03",
+                "method": "Unknown Method",
+                "sector": "Education",
+                "pii": [
+                    "Email",
+                    "Password"
+                ]
+            },
+            {
+                "name": "GoNitro.com",
+                "date": "2020-08",
+                "method": "Unknown Method",
+                "sector": "Uncategorized",
+                "pii": [
+                    "Unknown"
+                ]
+            }
         ]
     },
     {
@@ -210,8 +369,25 @@
         "email": "sudhir_dhage@spit.ac.in",
         "found": 3,
         "sources": [
-            "Chegg.com",
-            "GoNitro.com"
+            {
+                "name": "Chegg.com",
+                "date": "2018-03",
+                "method": "Unknown Method",
+                "sector": "Education",
+                "pii": [
+                    "Email",
+                    "Password"
+                ]
+            },
+            {
+                "name": "GoNitro.com",
+                "date": "2020-08",
+                "method": "Unknown Method",
+                "sector": "Uncategorized",
+                "pii": [
+                    "Unknown"
+                ]
+            }
         ]
     },
     {
@@ -228,15 +404,499 @@
         "email": "swapnali.kurhade@spit.ac.in",
         "found": 2,
         "sources": [
-            "Canva.com",
-            "GoNitro.com"
+            {
+                "name": "Canva.com",
+                "date": "2019-05",
+                "method": "Unknown Method",
+                "sector": "Uncategorized",
+                "pii": [
+                    "Unknown"
+                ]
+            },
+            {
+                "name": "GoNitro.com",
+                "date": "2020-08",
+                "method": "Unknown Method",
+                "sector": "Uncategorized",
+                "pii": [
+                    "Unknown"
+                ]
+            }
         ]
     },
     {
         "email": "varsha_hole@spit.ac.in",
         "found": 1,
         "sources": [
-            "LuminPDF.com"
+            {
+                "name": "LuminPDF.com",
+                "date": "2019-04",
+                "method": "Unknown Method",
+                "sector": "Uncategorized",
+                "pii": [
+                    "Unknown"
+                ]
+            }
         ]
+    },
+    {
+        "email": "bncspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "sudhirdhagespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "ysraospit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "kiran.talelespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "pbhavathankarspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "ritadasspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "drkalbandespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "reenakumbharespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "ddambawadespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "sheetalchaudharispit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "aparnahalbespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "varshaholespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "nikahatkazispit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "sujatakulkarnispit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "renukapawarspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "venkatislurspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "neha74spit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "harshilkanakiaspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "aartimkarandespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "nikhita.mangaonkarspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "sakinashaikhspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "pallavi.thakurspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "jitendradongrespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "pramodbidespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "kailasdevadkarspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "surekhadholayspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "kirangawandespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "sunilghanespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "anandgodbolespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "reetakoshyspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "swapnali.kurhadespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "anantnimkarspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "jyotiramtekespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "nataasharaulspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "rupalisawantspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "abhijeetsalunkespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "jsisodiaspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "nandspcespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "nalawade3spit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "manishabansodespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "narendrabhagatspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "amoldeshpandespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "Priya.chimurkarspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "najibghattespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "ghaldankarspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "deepakkariaspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "prashantkasambespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "sukanyakulkarnispit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "anandmanespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "pallavimalamespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "milindparayespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "manishparmarspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "rajendra.sawantspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "payalshahspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "rajendrasutarspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "sneha15weakeyspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "sujatagavasspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "kirtimorespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "vijaypatyanespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "deepalithombarespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "ananthalakshmivspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "cgajbhiyespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "kaisarkatchispit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "meghananaikspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "dmpatilspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "vasaikarhbspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "gajananbhakrespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "sunilpatankarspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "pramodpatilspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "bhaipawarspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "tpospit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "librarianspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "sanjayjoshispit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "pallavimorespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "sangita2006spit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "hnmurkutkarspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "ujwalagspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "sakshievrespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "shubhangipolspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "sameermspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "yogeshpatilspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "rajeshmorespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "dhivyarameshspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "sanjaydharpawarspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "karunabhikruspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "ganesh.morespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "aruna.nairspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "coespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "examspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "rajashrigovilkarspit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "sandeshnalawadespit.ac.in",
+        "found": 0,
+        "sources": []
+    },
+    {
+        "email": "counsellorspit.ac.in",
+        "found": 0,
+        "sources": []
     }
 ]
