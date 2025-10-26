@@ -1,445 +1,824 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <title>Dark Web Intel — Advanced Dashboard</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <head>
+    <meta charset="utf-8" />
+    <title>BreachSense — Advanced Dashboard</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
-  <style>
-    :root{
-      --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2; --accent:#6ee7b7; --danger:#ff6b6b; --glass: rgba(255,255,255,0.04);
-      --glass-2: rgba(255,255,255,0.02);
-    }
-    html,body{
-        height:100%;
-        margin:0;
-        font-family:'Times New Roman', serif; 
-        background:linear-gradient(180deg,#071021 0%, #0f1724 100%);
-        color:#e6eef6;
+    <style>
+      /* reset & basics */
+      * {
+        box-sizing: border-box;
+      }
+      :root {
+        --bg: #0f1724;
+        --card: #0b1220;
+        --muted: #9aa4b2;
+        --accent: #6ee7b7;
+        --danger: #ff6b6b;
+        --glass: rgba(255, 255, 255, 0.04);
+        --glass-2: rgba(255, 255, 255, 0.02);
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: "Times New Roman", serif;
+        background: linear-gradient(180deg, #071021 0%, #0f1724 100%);
+        color: #e6eef6;
         font-size: 16px;
-    }
-    .wrap{max-width:1400px;margin:28px auto;padding:20px}
-    header{display:flex;align-items:center;gap:24px;margin-bottom:24px}
-    .logo{
-        width:72px;height:72px;border-radius:14px;
-        background:linear-gradient(135deg,#00b0ff,#003cff);
-        display:flex;align-items:center;justify-content:center;
-        font-weight:800;
+      }
+
+      /* hide/position top canvas so it doesn't push content */
+      #confetti-canvas {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: -1; /* behind everything so it doesn't affect layout */
+      }
+
+      .wrap {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      header {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        margin-bottom: 18px;
+      }
+      .logo {
+        width: 72px;
+        height: 72px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #00b0ff, #003cff);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
         font-size: 32px;
-        color:#fff;
-        box-shadow:0 8px 30px rgba(0, 50, 200, 0.7);
+        color: #fff;
+        box-shadow: 0 8px 30px rgba(0, 50, 200, 0.7);
         border: 2px solid #fff;
-    }
-    h1{font-size:36px;margin:0;font-weight:700}
-    p.lead{margin:0;color:var(--muted);font-size:18px}
+      }
+      h1 {
+        font-size: 36px;
+        margin: 0;
+        font-weight: 700;
+      }
+      p.lead {
+        margin: 0;
+        color: var(--muted);
+        font-size: 18px;
+      }
 
-    .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:20px;margin-bottom:30px}
-    .card{background:linear-gradient(180deg,var(--card), rgba(255,255,255,0.02));padding:20px;border-radius:16px;box-shadow:0 8px 25px rgba(2,6,23,0.8);border:1px solid var(--glass)}
-    .card .label{font-size:16px;color:var(--muted);font-weight: bold;}
-    .card .value{font-size:48px;font-weight:800;margin-top:10px}
-
-    .grid{display:grid;grid-template-columns: 1fr 480px;gap:24px}
-    .panel{background:var(--card);padding:20px;border-radius:16px;border:1px solid var(--glass)}
-    .panel h3{margin:0 0 15px 0;font-size:24px}
-    .searchbar{display:flex;gap:12px;align-items:center;margin-bottom:15px}
-    input.search, select.sort{
-        flex:1;padding:12px 16px;border-radius:10px;
-        border:1px solid var(--glass-2);
-        background:transparent;color:inherit;
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-top: 20px;
+        margin-bottom: 30px;
+      }
+      .card {
+        background: linear-gradient(
+          180deg,
+          var(--card),
+          rgba(255, 255, 255, 0.02)
+        );
+        padding: 20px;
+        border-radius: 16px;
+        box-shadow: 0 8px 25px rgba(2, 6, 23, 0.8);
+        border: 1px solid var(--glass);
+      }
+      .card .label {
         font-size: 16px;
-    }
+        color: var(--muted);
+        font-weight: bold;
+      }
+      .card .value {
+        font-size: 48px;
+        font-weight: 800;
+        margin-top: 10px;
+      }
 
-    table{width:100%;border-collapse:collapse;color:#e6eef6;font-size: 16px;}
-    thead th{font-size:14px;text-align:left;padding:15px 10px;background:linear-gradient(180deg, rgba(255,255,255,0.04), transparent);border-bottom:2px solid rgba(255,255,255,0.08)}
-    tbody td{padding:15px 10px;border-bottom:1px dashed rgba(255,255,255,0.03);vertical-align:middle}
-    .email{font-weight:700;color:#cfeffd;font-size: 18px;}
-    .muted{color:var(--muted);font-size:15px}
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 480px;
+        gap: 24px;
+      }
+      .panel {
+        background: var(--card);
+        padding: 20px;
+        border-radius: 16px;
+        border: 1px solid var(--glass);
+      }
+      .panel h3 {
+        margin: 0 0 15px 0;
+        font-size: 24px;
+      }
 
-    .microbar{height:10px;background:linear-gradient(90deg,#1f2937,#0b1220);border-radius:8px;overflow:hidden}
-    .microbar > i{display:block;height:100%;background:linear-gradient(90deg,#60a5fa,#2dd4bf);width:0%;transition:width 700ms cubic-bezier(.2,.9,.2,1)}
+      /* search & sort layout & visible option colors */
+      .controls {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+      }
+      input.search {
+        flex: 1;
+        padding: 12px 16px;
+        border-radius: 10px;
+        border: 1px solid var(--glass-2);
+        background: transparent;
+        color: inherit;
+        font-size: 16px;
+        outline: none;
+      }
+      select.sort {
+        flex: 0 0 220px;
+        padding: 12px 16px;
+        border-radius: 10px;
+        border: 1px solid var(--glass-2);
+        background: #071021;
+        color: #e6eef6;
+        font-size: 16px;
+        outline: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+      }
+      select.sort option {
+        color: #e6eef6;
+        background: #0b1220;
+      }
 
-    /* PII red text */
-    .pii-red { color: var(--danger); font-weight: 600; }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        color: #e6eef6;
+        font-size: 16px;
+      }
+      thead th {
+        font-size: 14px;
+        text-align: left;
+        padding: 15px 10px;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.04),
+          transparent
+        );
+        border-bottom: 2px solid rgba(255, 255, 255, 0.08);
+      }
+      tbody td {
+        padding: 15px 10px;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.03);
+        vertical-align: middle;
+      }
+      .email {
+        font-weight: 700;
+        color: #cfeffd;
+        font-size: 18px;
+      }
+      .muted {
+        color: var(--muted);
+        font-size: 15px;
+      }
 
-    /* Overlay card styling */
-    .overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.8);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      backdrop-filter: blur(8px);
-    }
-    .breach-card {
-      background: #0f172a;
-      color: #e6eef6;
-      border-radius: 12px;
-      padding: 2rem;
-      max-width: 600px;
-      width: 90%;
-      box-shadow: 0 0 20px rgba(0,0,0,0.5);
-      position: relative;
-      animation: popIn 0.3s ease;
-      overflow-y: auto;
-      max-height: 80vh;
-    }
-    .breach-card h2 { margin-top: 0; color: #60a5fa; }
-    .breach-block { border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 0.75rem; margin-top: 0.75rem; background: rgba(255,255,255,0.05); }
-    .close-btn {
-      position: absolute; top: 10px; right: 14px;
-      background: transparent; border: none; font-size: 1.8rem; color: #94a3b8; cursor: pointer;
-    }
-    .close-btn:hover { color: #f87171; }
-    @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+      .microbar {
+        height: 10px;
+        background: linear-gradient(90deg, #1f2937, #0b1220);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+      .microbar > i {
+        display: block;
+        height: 100%;
+        background: linear-gradient(90deg, #60a5fa, #2dd4bf);
+        width: 0%;
+        transition: width 700ms cubic-bezier(0.2, 0.9, 0.2, 1);
+      }
 
-    /* Confetti popup */
-    .congrats {
-      position: fixed;
-      left: 50%;
-      top: 12%;
-      transform: translateX(-50%) scale(0.9);
-      background: linear-gradient(90deg,#06b6d4,#60a5fa);
-      color: #022;
-      padding: 24px 32px;
-      border-radius: 16px;
-      box-shadow: 0 30px 80px rgba(8,12,24,0.8);
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      z-index: 9998;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity .3s ease, transform .3s ease;
-    }
-    .congrats.show { opacity: 1; pointer-events: auto; transform: translateX(-50%) scale(1); }
-    .congrats .tick { background: #022; padding: 12px; border-radius: 12px; color: var(--accent); font-weight: 800; font-size: 24px; }
+      .pii-red {
+        color: var(--danger);
+        font-weight: 600;
+      }
 
-  </style>
-</head>
-<body>
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        backdrop-filter: blur(8px);
+      }
+      .breach-card {
+        background: #0f172a;
+        color: #e6eef6;
+        border-radius: 12px;
+        padding: 2rem;
+        max-width: 600px;
+        width: 90%;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        position: relative;
+        animation: popIn 0.3s ease;
+        overflow-y: auto;
+        max-height: 80vh;
+      }
+      .breach-card h2 {
+        margin-top: 0;
+        color: #60a5fa;
+      }
+      .breach-block {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        padding: 0.75rem;
+        margin-top: 0.75rem;
+        background: rgba(255, 255, 255, 0.03);
+      }
+      .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 14px;
+        background: transparent;
+        border: none;
+        font-size: 1.8rem;
+        color: #94a3b8;
+        cursor: pointer;
+      }
+      .close-btn:hover {
+        color: #f87171;
+      }
+      @keyframes popIn {
+        from {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        to {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
 
-  <canvas id="confetti-canvas"></canvas>
+      .congrats {
+        position: fixed;
+        left: 50%;
+        top: 12%;
+        transform: translateX(-50%) scale(0.9);
+        background: linear-gradient(90deg, #06b6d4, #60a5fa);
+        color: #022;
+        padding: 24px 32px;
+        border-radius: 16px;
+        box-shadow: 0 30px 80px rgba(8, 12, 24, 0.8);
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        z-index: 9998;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+      .congrats.show {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateX(-50%) scale(1);
+      }
+      .congrats .tick {
+        background: #022;
+        padding: 12px;
+        border-radius: 12px;
+        color: var(--accent);
+        font-weight: 800;
+        font-size: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- top confetti canvas (positioned behind so it doesn't create space) -->
+    <canvas id="confetti-canvas"></canvas>
 
-  <div class="wrap">
-    <header>
-      <div class="logo">&#128165;</div>
-      <div>
-        <h1>BreachSense</h1>
-        <p class="lead">Click on an email to see full details.</p>
-      </div>
-    </header>
+    <div class="wrap">
+      <header>
+        <div class="logo">&#128165;</div>
+        <div>
+          <h1>BreachSense</h1>
+          <p class="lead">Discover where your data may have surfaced online</p>
+        </div>
+      </header>
 
-    <div class="cards" id="cards">
-      <div class="card"><div class="label">Total Checked Accounts</div><div class="value" id="card-checked">—</div></div>
-      <div class="card"><div class="label">Accounts With Breaches</div><div class="value" id="card-leaked">—</div></div>
-      <div class="card"><div class="label">Safe Percentage</div><div class="value" id="card-safe">—</div></div>
-      <div class="card"><div class="label">Most Common Source</div><div class="value" id="card-topsource">—</div></div>
-    </div>
-
-    <div class="grid">
-      <div>
-        <div class="panel">
-          <div style="display:flex;justify-content:space-between;align-items:center; flex-wrap: wrap;">
-            <h3>Detected Email Breaches</h3>
-            <div style="display:flex;gap:12px;align-items:center">
-              <input class="search" id="search" placeholder="Search email or source..." />
-              <select class="sort" id="sort">
-                <option value="leaks_desc">Sort: Leaks (high→low)</option>
-                <option value="leaks_asc">Sort: Leaks (low→high)</option>
-                <option value="alpha">Sort: Email (A→Z)</option>
-              </select>
-            </div>
-          </div>
-          <table id="emailsTable">
-            <thead>
-              <tr><th>Account & Name</th><th>Total Leaks</th><th>Top Sources</th><th>Risk Score</th></tr>
-            </thead>
-            <tbody></tbody>
-          </table>
+      <div class="cards" id="cards">
+        <div class="card">
+          <div class="label">Total Checked Accounts</div>
+          <div class="value" id="card-checked">—</div>
+        </div>
+        <div class="card">
+          <div class="label">Accounts With Breaches</div>
+          <div class="value" id="card-leaked">—</div>
+        </div>
+        <div class="card">
+          <div class="label">Safe Percentage</div>
+          <div class="value" id="card-safe">—</div>
+        </div>
+        <div class="card">
+          <div class="label">Most Common Source</div>
+          <div class="value" id="card-topsource">—</div>
         </div>
       </div>
-     <div class="right">
-    <div class="panel" style="margin-bottom:16px">
-        <h3>Sector Breakdown</h3>
-        <div class="chart-box" style="height:300px;"><canvas id="donutChart"></canvas></div>
-      </div>
-    <div class="panel" style="margin-bottom:16px">
-        <h3>Breaches Over Time</h3>
-        <div class="chart-box" style="height:300px;"><canvas id="timeChart"></canvas></div>
-    </div>
-    <div class="panel">
-        <h3>Details</h3>
-        <div class="muted" id="explain">Click an email to view breach details. 0 leaks = safe.</div>
-    </div>
-</div>
+
+      <div class="grid">
+        <div>
+          <div class="panel">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+              "
+            >
+              <h3>Detected Email Breaches</h3>
+              <div class="controls">
+                <input
+                  class="search"
+                  id="search"
+                  placeholder="Search email or source..."
+                />
+                <select class="sort" id="sort">
+                  <option value="leaks_desc">Sort: Leaks (high → low)</option>
+                  <option value="leaks_asc">Sort: Leaks (low → high)</option>
+                  <option value="alpha">Sort: Email (A → Z)</option>
+                </select>
+              </div>
+            </div>
+
+            <table id="emailsTable">
+              <thead>
+                <tr>
+                  <th>Account & Name</th>
+                  <th>Total Leaks</th>
+                  <th>Top Sources</th>
+                  <th>Risk Score</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="right">
+          <div class="panel" style="margin-bottom: 16px">
+            <h3>Sector Breakdown</h3>
+            <div style="height: 300px"><canvas id="donutChart"></canvas></div>
+          </div>
+
+          <div class="panel" style="margin-bottom: 16px">
+            <h3>Breaches Over Time</h3>
+            <div style="height: 300px"><canvas id="timeChart"></canvas></div>
+          </div>
+
+          <div class="panel">
+            <h3>Details</h3>
+            <div class="muted" id="explain">
+              Click an email to view breach details. 0 leaks = safe.
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div id="congrats" class="congrats">
-    <div class="tick">✔</div>
-    <div>
-      <div style="font-weight:800; font-size: 20px;">CONGRATULATIONS!</div>
-      <div class="muted" style="color:#022;">You have 0 breaches!!!</div>
+    <div id="congrats" class="congrats">
+      <div class="tick">✔</div>
+      <div>
+        <div style="font-weight: 800; font-size: 20px">CONGRATULATIONS!</div>
+        <div class="muted" style="color: #022">You have 0 breaches!!!</div>
+      </div>
     </div>
-  </div>
 
-<script>
-const sourceDetails = {
-  "Twitter.com (scraping data)": { pii: ["Email", "Password"], sector: "Social Media" },
-  "Chegg.com": { pii: ["Email", "Password"], sector: "Education" },
-  "GoNitro.com": { pii: ["Email", "Password", "IP Address"], sector: "Software" },
-  "LuminPDF.com": { pii: ["Email", "Password"], sector: "Cloud Services" },
-  "TrueCaller India": { pii: ["Email", "Phone Number", "Name"], sector: "Contact Directory" },
-  "Canva.com": { pii: ["Email", "Password", "Name"], sector: "Design Platform" },
-  "Wattpad.com": { pii: ["Email", "Password", "Username"], sector: "Content Platform" },
-  "LinkedIn.com": { pii: ["Email", "Password", "Employment Info"], sector: "Professional Network" },
-  "Dropbox.com": { pii: ["Email", "Password"], sector: "Cloud Storage" },
-  "Apollo.io": { pii: ["Email", "Name", "Company Info"], sector: "Business Data Platform" },
-  "Bigbasket.com": { pii: ["Email", "Password", "Address", "Phone Number"], sector: "E-Commerce" },
-  "Indiamart.com": { pii: ["Email", "Password", "Business Info"], sector: "E-Commerce" },
-  "Stealer Logs": { pii: ["Email", "Password", "Browser Data", "System Info"], sector: "Malware Dump" },
-  "bncspit.ac.in": { pii: ["Email"], sector: "Academic Institution" }
-};
+    <script>
+      /* mapping of known sources (same as before) */
+      const sourceDetails = {
+        "Twitter.com (scraping data)": {
+          pii: ["Email", "Password"],
+          sector: "Social Media",
+        },
+        "Chegg.com": { pii: ["Email", "Password"], sector: "Education" },
+        "GoNitro.com": {
+          pii: ["Email", "Password", "IP Address"],
+          sector: "Software",
+        },
+        "LuminPDF.com": {
+          pii: ["Email", "Password"],
+          sector: "Cloud Services",
+        },
+        "TrueCaller India": {
+          pii: ["Email", "Phone Number", "Name"],
+          sector: "Contact Directory",
+        },
+        "Canva.com": {
+          pii: ["Email", "Password", "Name"],
+          sector: "Design Platform",
+        },
+        "Wattpad.com": {
+          pii: ["Email", "Password", "Username"],
+          sector: "Content Platform",
+        },
+        "LinkedIn.com": {
+          pii: ["Email", "Password", "Employment Info"],
+          sector: "Professional Network",
+        },
+        "Dropbox.com": { pii: ["Email", "Password"], sector: "Cloud Storage" },
+        "Apollo.io": {
+          pii: ["Email", "Name", "Company Info"],
+          sector: "Business Data Platform",
+        },
+        "Bigbasket.com": {
+          pii: ["Email", "Password", "Address", "Phone Number"],
+          sector: "E-Commerce",
+        },
+        "Indiamart.com": {
+          pii: ["Email", "Password", "Business Info"],
+          sector: "E-Commerce",
+        },
+        "Stealer Logs": {
+          pii: ["Email", "Password", "Browser Data", "System Info"],
+          sector: "Malware Dump",
+        },
+        "bncspit.ac.in": { pii: ["Email"], sector: "Academic Institution" },
+      };
 
-// ==============================
-// Load Results + Error Handling
-// ==============================
-async function loadResults() {
-  try {
-    const res = await fetch("out/leak_results.json");
-    if (!res.ok) throw new Error("File not found or failed to load.");
-    const data = await res.json();
+      let originalData = [];
+      let donutChartInstance = null;
+      let timeChartInstance = null;
 
-    populateTable(data);
-    visualizeCharts(data);
-    updateSummaryCards(data);
-  } catch (err) {
-    console.error("Error loading data:", err);
-    document.querySelector("#emailsTable tbody").innerHTML =
-      `<tr><td colspan="4" style="text-align:center;color:#f87171;">⚠ No results found or file missing.</td></tr>`;
-  }
-}
+      /* --------------------
+   Load data & boot
+   -------------------- */
+      async function loadResults() {
+        try {
+          const res = await fetch("out/leak_results.json");
+          if (!res.ok) throw new Error("File not found or failed to load.");
+          const data = await res.json();
+          originalData = Array.isArray(data) ? data : [];
+          applyFilters(); // populate & draw charts from originalData
+          updateSummaryCards(originalData);
+        } catch (err) {
+          console.error("Error loading data:", err);
+          document.querySelector(
+            "#emailsTable tbody"
+          ).innerHTML = `<tr><td colspan="4" style="text-align:center;color:#f87171;">⚠ No results found or file missing.</td></tr>`;
+        }
+      }
 
-// ==============================
-// Table Population
-// ==============================
-function populateTable(data) {
-  const tbody = document.querySelector("#emailsTable tbody");
-  tbody.innerHTML = "";
-  data.forEach(entry => {
-    const tr = document.createElement("tr");
-    const sourceNames = (entry.sources || []).map(src => src.name || src);
-    tr.innerHTML = `
-      <td><div class="email">${entry.email}</div><div class="muted">${guessName(entry.email)}</div></td>
-      <td><b>${entry.found}</b></td>
-      <td>${sourceNames.length > 0 ? sourceNames.join(", ") : "-"}</td>
-      <td><div class="microbar"><i style="width:${Math.min(entry.found * 10, 100)}%"></i></div></td>
+      /* --------------------
+   Populate table
+   -------------------- */
+      function populateTable(data) {
+        const tbody = document.querySelector("#emailsTable tbody");
+        tbody.innerHTML = "";
+        if (!data || data.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--muted)">No entries</td></tr>`;
+          return;
+        }
+        data.forEach((entry) => {
+          const tr = document.createElement("tr");
+          const sourceNames = (entry.sources || []).map(
+            (src) => src.name || src
+          );
+          tr.innerHTML = `
+      <td><div class="email">${escapeHtml(
+        entry.email || "N/A"
+      )}</div><div class="muted">${escapeHtml(
+            guessName(entry.email)
+          )}</div></td>
+      <td><b>${Number(entry.found || 0)}</b></td>
+      <td>${
+        sourceNames.length > 0 ? escapeHtml(sourceNames.join(", ")) : "-"
+      }</td>
+      <td><div class="microbar"><i style="width:${Math.min(
+        Number(entry.found || 0) * 10,
+        100
+      )}%"></i></div></td>
     `;
-    tr.addEventListener("click", () => showBreachCard(entry, sourceNames));
-    tbody.appendChild(tr);
-  });
-}
+          tr.addEventListener("click", () =>
+            showBreachCard(entry, sourceNames)
+          );
+          tbody.appendChild(tr);
+        });
+      }
 
-// ==============================
-// Breach Card (Popup)
-// ==============================
-function showBreachCard(entry, sourceNames) {
-  hideBreachCard();
-  const overlay = document.createElement("div");
-  overlay.className = "overlay";
+      /* --------------------
+   Search & Sort
+   -------------------- */
+      document.getElementById("search").addEventListener("input", applyFilters);
+      document.getElementById("sort").addEventListener("change", applyFilters);
 
-  if (entry.found === 0) {
-    setTimeout(() => launchConfettiInside(overlay.querySelector(".breach-card")), 300);
+      function applyFilters() {
+        const searchValue = document
+          .getElementById("search")
+          .value.trim()
+          .toLowerCase();
+        const sortOption = document.getElementById("sort").value;
 
-    const congrats = document.getElementById("congrats");
-    congrats.classList.add("show");
-    setTimeout(() => congrats.classList.remove("show"), 3000);
-  }
+        let filtered = originalData.filter((e) => {
+          if (!e) return false;
+          const email = (e.email || "").toLowerCase();
+          const sources = (e.sources || []).map((s) =>
+            (s.name || s).toString().toLowerCase()
+          );
+          const inEmail = email.includes(searchValue);
+          const inSources = sources.some((s) => s.includes(searchValue));
+          // if search empty, keep all
+          return searchValue === "" ? true : inEmail || inSources;
+        });
 
-  overlay.innerHTML = `
+        if (sortOption === "leaks_desc")
+          filtered.sort((a, b) => Number(b.found || 0) - Number(a.found || 0));
+        else if (sortOption === "leaks_asc")
+          filtered.sort((a, b) => Number(a.found || 0) - Number(b.found || 0));
+        else if (sortOption === "alpha")
+          filtered.sort((a, b) =>
+            String(a.email || "").localeCompare(String(b.email || ""))
+          );
+
+        populateTable(filtered);
+        visualizeCharts(filtered);
+        updateSummaryCards(filtered);
+      }
+
+      /* --------------------
+   Breach Card popup
+   -------------------- */
+      function showBreachCard(entry, sourceNames) {
+        hideBreachCard();
+        const overlay = document.createElement("div");
+        overlay.className = "overlay";
+
+        overlay.innerHTML = `
     <div class="breach-card">
-      <button class="close-btn">×</button>
-      <h2>${entry.email}</h2>
-      <p><b>Name:</b> ${guessName(entry.email)}</p>
-      <p><b>Total Leaks:</b> ${entry.found}</p>
+      <button class="close-btn" aria-label="Close">×</button>
+      <h2>${escapeHtml(entry.email || "N/A")}</h2>
+      <p><b>Name:</b> ${escapeHtml(guessName(entry.email))}</p>
+      <p><b>Total Leaks:</b> ${Number(entry.found || 0)}</p>
       <hr>
-      ${entry.found > 0 ? entry.sources.map(src => {
-        const name = src.name || src;
-        const mapped = sourceDetails[name] || {};
-        const pii = mapped.pii ? `<span class="pii-red">${mapped.pii.join(", ")}</span>` : `<span class="pii-red">Unknown</span>`;
-        const sector = mapped.sector || "Uncategorized";
-        return `
+      ${
+        Number(entry.found || 0) > 0
+          ? (entry.sources || [])
+              .map((src) => {
+                const name = src.name || src;
+                const mapped = sourceDetails[name] || {};
+                const pii = mapped.pii
+                  ? `<span class="pii-red">${escapeHtml(
+                      mapped.pii.join(", ")
+                    )}</span>`
+                  : `<span class="pii-red">Unknown</span>`;
+                const sector = mapped.sector || "Uncategorized";
+                return `
           <div class="breach-block">
-            <h4>${name}</h4>
-            <p><b>Date:</b> ${src.date || "Unknown"}</p>
-            <p><b>Sector:</b> ${sector}</p>
+            <h4>${escapeHtml(name)}</h4>
+            <p><b>Date:</b> ${escapeHtml(src.date || "Unknown")}</p>
+            <p><b>Sector:</b> ${escapeHtml(sector)}</p>
             <p><b>PII Lost:</b> ${pii}</p>
           </div>`;
-      }).join("") : `<p style="color:#34d399;">✅ This email is safe. No breaches found.</p>`}
-    </div>`;
-  document.body.appendChild(overlay);
-  overlay.querySelector(".close-btn").addEventListener("click", hideBreachCard);
-  overlay.addEventListener("click", e => { if (e.target.classList.contains("overlay")) hideBreachCard(); });
-}
+              })
+              .join("")
+          : `<p style="color:#34d399;">✅ This email is safe. No breaches found.</p>`
+      }
+    </div>
+  `;
 
-function hideBreachCard() { document.querySelectorAll(".overlay").forEach(o => o.remove()); }
+        document.body.appendChild(overlay);
 
-function guessName(email) {
-  if (!email) return "N/A";
-  const userPart = email.split('@')[0];
-  const name = userPart.replace(/[._-]/g, " ");
-  return name.charAt(0).toUpperCase() + name.slice(1);
-}
-// ==============================
-// Summary Cards
-// ==============================
-function updateSummaryCards(data) {
-  const total = data.length;
-  const breached = data.filter(e => e.found > 0).length;
-  const safePercent = total > 0 ? (((total - breached) / total) * 100).toFixed(1) : 0;
-
-  // find most common source
-  const sourceCount = {};
-  data.forEach(e => {
-    (e.sources || []).forEach(s => {
-      const name = s.name || s;
-      sourceCount[name] = (sourceCount[name] || 0) + 1;
-    });
-  });
-  const mostCommon = Object.entries(sourceCount).sort((a, b) => b[1] - a[1])[0]?.[0] || "—";
-
-  document.getElementById("card-checked").textContent = total || "—";
-  document.getElementById("card-leaked").textContent = breached || "—";
-  document.getElementById("card-safe").textContent = `${safePercent}%`;
-  document.getElementById("card-topsource").textContent = mostCommon;
-}
-
-// ==============================
-// Charts
-// ==============================
-// ==============================
-// Charts - CONSOLIDATED & CORRECTED FUNCTION
-// ==============================
-function visualizeCharts(data) {
-    // --- 1. Data Aggregation ---
-    const sectorCounts = {};
-    const yearCounts = {}; // This is needed for the Breaches Over Time chart
-
-    data.forEach(e => {
-        (e.sources || []).forEach(s => {
-            const name = s.name || s;
-
-            // Sector Counts (for Donut Chart)
-            const sector = sourceDetails[name]?.sector || "Other";
-            sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
-
-            // Year Counts (for Time Series Chart)
-            if (s.date && typeof s.date === 'string' && s.date.length >= 4) {
-                const year = s.date.substring(0, 4); // Assuming date is in 'YYYY-MM-DD' format
-                yearCounts[year] = (yearCounts[year] || 0) + 1;
-            }
+        // wire close
+        overlay
+          .querySelector(".close-btn")
+          .addEventListener("click", hideBreachCard);
+        overlay.addEventListener("click", (e) => {
+          if (e.target.classList.contains("overlay")) hideBreachCard();
         });
-    });
 
-    // --- 2. Doughnut Chart (Sector Breakdown) ---
-    const ctxDonut = document.getElementById("donutChart").getContext("2d");
-    // Destroy existing chart instance to prevent errors if running multiple times
-    if (window.donutChartInstance) window.donutChartInstance.destroy(); 
-    window.donutChartInstance = new Chart(ctxDonut, {
-        type: "doughnut",
-        data: {
+        // confetti + congrats shown AFTER element is appended (fixes sequencing bug)
+        if (Number(entry.found || 0) === 0) {
+          const cardEl = overlay.querySelector(".breach-card");
+          launchConfettiInside(cardEl);
+          const congrats = document.getElementById("congrats");
+          congrats.classList.add("show");
+          setTimeout(() => congrats.classList.remove("show"), 2800);
+        }
+      }
+
+      function hideBreachCard() {
+        document.querySelectorAll(".overlay").forEach((o) => o.remove());
+      }
+
+      /* --------------------
+   Utils
+   -------------------- */
+      function guessName(email) {
+        if (!email) return "N/A";
+        const user = String(email).split("@")[0] || "";
+        const pretty = user.replace(/[._-]/g, " ").trim();
+        return pretty.charAt(0).toUpperCase() + pretty.slice(1);
+      }
+      function escapeHtml(s) {
+        return String(s || "").replace(
+          /[&<>"']/g,
+          (m) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;",
+            }[m])
+        );
+      }
+
+      /* --------------------
+   Summary cards + Charts
+   -------------------- */
+      function updateSummaryCards(data) {
+        const total = Array.isArray(data) ? data.length : 0;
+        const breached = (data || []).filter(
+          (e) => Number(e.found || 0) > 0
+        ).length;
+        const safePercent =
+          total > 0 ? (((total - breached) / total) * 100).toFixed(1) : "0.0";
+
+        // most common source
+        const sourceCount = {};
+        (data || []).forEach((e) => {
+          (e.sources || []).forEach((s) => {
+            const name = s.name || s || "Unknown";
+            sourceCount[name] = (sourceCount[name] || 0) + 1;
+          });
+        });
+        const mostCommon =
+          Object.entries(sourceCount).sort((a, b) => b[1] - a[1])[0]?.[0] ||
+          "—";
+
+        document.getElementById("card-checked").textContent = total;
+        document.getElementById("card-leaked").textContent = breached;
+        document.getElementById("card-safe").textContent = `${safePercent}%`;
+        document.getElementById("card-topsource").textContent = mostCommon;
+      }
+
+      function visualizeCharts(data) {
+        // destroy previous instances if present
+        if (donutChartInstance) {
+          try {
+            donutChartInstance.destroy();
+          } catch (e) {}
+          donutChartInstance = null;
+        }
+        if (timeChartInstance) {
+          try {
+            timeChartInstance.destroy();
+          } catch (e) {}
+          timeChartInstance = null;
+        }
+
+        // sector counts
+        const sectorCounts = {};
+        (data || []).forEach((e) => {
+          (e.sources || []).forEach((s) => {
+            const name = s.name || s || "Unknown";
+            const sector =
+              (sourceDetails[name] && sourceDetails[name].sector) || "Other";
+            sectorCounts[sector] = (sectorCounts[sector] || 0) + 1;
+          });
+        });
+
+        const donutCtx = document.getElementById("donutChart").getContext("2d");
+        donutChartInstance = new Chart(donutCtx, {
+          type: "doughnut",
+          data: {
             labels: Object.keys(sectorCounts),
-            datasets: [{
+            datasets: [
+              {
                 data: Object.values(sectorCounts),
-                backgroundColor: ["#60a5fa","#34d399","#fbbf24","#f87171","#a78bfa","#f472b6","#10b981"]
-            }]
-        },
-        options: {
-            plugins: { legend: { labels: { color: "#e6eef6" }, position: "bottom" } }
-        }
-    });
-
-    // --- 3. Line Chart (Breaches Over Time) ---
-    const sortedYears = Object.keys(yearCounts).sort();
-    const sortedCounts = sortedYears.map(year => yearCounts[year]);
-
-    const ctxTime = document.getElementById("timeChart").getContext("2d");
-    // Destroy existing chart instance to prevent errors
-    if (window.timeChartInstance) window.timeChartInstance.destroy();
-    window.timeChartInstance = new Chart(ctxTime, {
-        type: "line",
-        data: {
-            labels: sortedYears,
-            datasets: [{
-                label: 'Total Breaches',
-                data: sortedCounts,
-                borderColor: "#ff6b6b", // Danger red for a clear warning trend
-                backgroundColor: 'rgba(255, 107, 107, 0.2)',
-                tension: 0.3, // Smoother line
-                fill: true
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: { beginAtZero: true, ticks: { color: '#9aa4b2' }, grid: { color: 'rgba(255,255,255,0.08)' } },
-                x: { ticks: { color: '#9aa4b2' }, grid: { color: 'rgba(255,255,255,0.08)' } }
+                backgroundColor: [
+                  "#60a5fa",
+                  "#34d399",
+                  "#fbbf24",
+                  "#f87171",
+                  "#a78bfa",
+                  "#f472b6",
+                  "#10b981",
+                  "#f59e0b",
+                ],
+              },
+            ],
+          },
+          options: {
+            plugins: {
+              legend: { position: "bottom", labels: { color: "#e6eef6" } },
             },
-            plugins: { legend: { display: false } }
-        }
-    });
-}
-// ==============================
-function launchConfettiInside(cardElement) {
-  // Create a temporary canvas inside the card
-  const canvas = document.createElement("canvas");
-  canvas.style.position = "absolute";
-  canvas.style.top = "0";
-  canvas.style.left = "0";
-  canvas.style.width = "100%";
-  canvas.style.height = "100%";
-  canvas.style.pointerEvents = "none";
-  canvas.style.zIndex = "9999";
-  cardElement.style.position = "relative"; // ensure card is positioned
-  cardElement.appendChild(canvas);
+            maintainAspectRatio: false,
+          },
+        });
 
-  // Initialize confetti on this mini-canvas only
-  const myConfetti = confetti.create(canvas, { resize: true, useWorker: true });
-  const end = Date.now() + 1000;
+        // year counts for time chart (place "Unknown" at end)
+        const yearCounts = {};
+        (data || []).forEach((e) => {
+          (e.sources || []).forEach((s) => {
+            const y =
+              (s && s.date && String(s.date).split("-")[0]) || "Unknown";
+            yearCounts[y] = (yearCounts[y] || 0) + 1;
+          });
+        });
 
-  (function frame() {
-    myConfetti({
-      particleCount: 6,
-      startVelocity: 25,
-      spread: 70,
-      ticks: 60,
-      origin: { y: 0.5 },
-      colors: ['#34d399', '#3b82f6', '#facc15']
-    });
-    if (Date.now() < end) {
-      requestAnimationFrame(frame);
-    } else {
-      // remove canvas after done
-      setTimeout(() => canvas.remove(), 500);
-    }
-  })();
-}
+        const knownYears = Object.keys(yearCounts)
+          .filter((y) => y !== "Unknown")
+          .sort();
+        const labels = [...knownYears];
+        if (yearCounts["Unknown"]) labels.push("Unknown");
 
+        const counts = labels.map((l) => yearCounts[l] || 0);
 
-// ==============================
-// Start
-// ==============================
-loadResults();
-</script>
+        const timeCtx = document.getElementById("timeChart").getContext("2d");
+        timeChartInstance = new Chart(timeCtx, {
+          type: "line",
+          data: {
+            labels,
+            datasets: [
+              {
+                label: "Total Breaches",
+                data: counts,
+                borderColor: "#ff6b6b",
+                backgroundColor: "rgba(255,107,107,0.15)",
+                tension: 0.3,
+                fill: true,
+              },
+            ],
+          },
+          options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+              x: {
+                ticks: { color: "#9aa4b2" },
+                grid: { color: "rgba(255,255,255,0.03)" },
+              },
+              y: {
+                beginAtZero: true,
+                ticks: { color: "#9aa4b2" },
+                grid: { color: "rgba(255,255,255,0.03)" },
+              },
+            },
+            plugins: { legend: { display: false } },
+          },
+        });
+      }
 
+      /* --------------------
+   Confetti utility (mini inside popup)
+   -------------------- */
+      function launchConfettiInside(cardElement) {
+        // use the global confetti library but make it visible inside the card
+        // We'll create a small canvas overlay inside the card
+        if (!cardElement) return;
+        const canvas = document.createElement("canvas");
+        canvas.style.position = "absolute";
+        canvas.style.top = "0";
+        canvas.style.left = "0";
+        canvas.style.width = "100%";
+        canvas.style.height = "100%";
+        canvas.style.pointerEvents = "none";
+        canvas.style.zIndex = "9999";
+        cardElement.style.position = "relative";
+        cardElement.appendChild(canvas);
 
-</body>
+        const myConfetti = confetti.create(canvas, {
+          resize: true,
+          useWorker: true,
+        });
+        const end = Date.now() + 900;
+        (function frame() {
+          myConfetti({
+            particleCount: 6,
+            startVelocity: 25,
+            spread: 70,
+            ticks: 60,
+            origin: { y: 0.3 },
+          });
+          if (Date.now() < end) requestAnimationFrame(frame);
+          else setTimeout(() => canvas.remove(), 500);
+        })();
+      }
+
+      /* --------------------
+   Start
+   -------------------- */
+      loadResults();
+    </script>
+  </body>
 </html>
